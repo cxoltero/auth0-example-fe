@@ -1,6 +1,7 @@
 import { Button, createStyles, Paper, Theme, WithStyles, withStyles } from '@material-ui/core'
 import Typography from '@material-ui/core/Typography'
 import * as React from 'react'
+import { Link } from 'react-router-dom'
 
 interface ILoginFormProps extends WithStyles<typeof styles> {
 	isAuthenticated: boolean
@@ -15,9 +16,16 @@ class LoginForm extends React.Component<ILoginFormProps, {}> {
 		return (
 			<Paper className={classes.root}>
 				<form className={classes.form} onSubmit={this.handleFormSubmit}>
-					<Typography align="center" component="h1" variant="h5" style={{ padding: '20px 0' }}>
+					<Typography align="center" component="h1" variant="h5" style={{ padding: '10px 0' }}>
 						{isAuthenticated ? 'You are signed in' : 'Please Sign In'}
 					</Typography>
+
+					{isAuthenticated && (
+						<Typography align="center" component="h1" variant="h5" style={{ padding: '20px 0' }}>
+							<Link to="/home">View Profile</Link>
+						</Typography>
+					)}
+
 					<div className={classes.formActions}>
 						{isAuthenticated ? (
 							<Button variant="contained" color="secondary" className={classes.logout} onClick={this.handleLogout}>

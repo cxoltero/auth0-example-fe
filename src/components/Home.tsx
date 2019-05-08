@@ -1,5 +1,7 @@
-import { Button, createStyles, Theme, Typography, withStyles, WithStyles } from '@material-ui/core'
+import { createStyles, Theme, Typography, withStyles, WithStyles } from '@material-ui/core'
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
+import Profile from './Profile'
 
 interface IMainProps extends WithStyles<typeof styles> {
 	auth: any
@@ -13,24 +15,28 @@ class Home extends Component<IMainProps, {}> {
 		return (
 			<div className={classes.root}>
 				{isAuthenticated ? (
-					<Typography variant="h4">You are logged in!</Typography>
+					<div>
+						<Typography variant="h4" align="center">
+							Welcome!
+						</Typography>
+						<Profile auth={auth} />
+					</div>
 				) : (
-					<Button type="submit" variant="contained" color="default" onClick={this.login}>
-						Log In
-					</Button>
+					<Typography align="center" component="h1" variant="h5">
+						Your session expired, go <Link to="/">back to login page</Link>
+					</Typography>
 				)}
 			</div>
 		)
-	}
-
-	private login = () => {
-		this.props.auth.login()
 	}
 }
 
 const styles = (theme: Theme) =>
 	createStyles({
-		root: {},
+		root: {
+			display: 'flex',
+			justifyContent: 'center',
+		},
 	})
 
 export default withStyles(styles)(Home)

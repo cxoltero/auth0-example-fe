@@ -1,6 +1,7 @@
-import history from '../history';
-
 import auth0, {Auth0DecodedHash, Auth0Error, Auth0ParseHashError, Auth0UserProfile} from 'auth0-js';
+import moment from 'moment'
+
+import history from '../history';
 
 export default class Auth {
     public auth = new auth0.WebAuth({
@@ -71,11 +72,13 @@ export default class Auth {
 
     public isAuthenticated = () =>  {
         const expiresAt = this.expiresAt;
+        console.log('expiresAt: ', moment( expiresAt ).calendar());
+
         return new Date().getTime() < expiresAt;
     };
 
     public renewSession = () => {
-        this.auth.checkSession({}, (err: Auth0ParseHashError | null, authResult: Auth0DecodedHash | null) => {
+        this.auth.checkSession({}, (err?: Auth0ParseHashError | null, authResult?: Auth0DecodedHash | null) => {
             if (authResult && authResult.accessToken && authResult.idToken) {
                 this.setSession(authResult);
             } else if (err) {
@@ -87,9 +90,8 @@ export default class Auth {
     }
 
     private setSession(authResult: Auth0DecodedHash) {
-        localStorage.setItem('isLoggedIn', 'true');
-
-        const expiresAt = (authResult.expiresIn || 1 * 1000) + new Date().getTime();
+        const expiresAt = ((authResult.expiresIn || 0) * 1000) + new Date().getTime();
+        
         this.accessToken = authResult.accessToken;
         this.idToken = authResult.idToken;
         this.expiresAt = expiresAt;

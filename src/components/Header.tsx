@@ -1,37 +1,37 @@
-import {AppBar, createStyles, Theme, Toolbar, Typography, WithStyles, withStyles} from "@material-ui/core";
-import {red} from "@material-ui/core/colors"
-import * as React from "react";
+import { AppBar, createStyles, Theme, Toolbar, WithStyles, withStyles } from '@material-ui/core'
+import { red } from '@material-ui/core/colors'
+import * as React from 'react'
+import { withRouter } from 'react-router'
+import { NavLink, RouteComponentProps } from 'react-router-dom'
 
-interface IHeaderProps extends WithStyles<typeof styles> {
+type IHeaderWithRouter = {} & RouteComponentProps<{}> & WithStyles<typeof styles>
 
+const Header: React.FC<IHeaderWithRouter> = (props) => {
+	const { classes } = props
+
+	return (
+		<header className={classes.root}>
+			<AppBar position="static" color="default">
+				<Toolbar>
+					<NavLink to="/" className={classes.title}>
+						Auth0 Demo
+					</NavLink>
+				</Toolbar>
+			</AppBar>
+		</header>
+	)
 }
-
-const Header: React.FC<IHeaderProps> = (props) => {
-    const {classes} = props
-
-    return (
-        <header className= {classes.root}>
-            <AppBar position="static" color="default">
-                <Toolbar>
-                    <Typography variant="h6" color="inherit" className={classes.title}>
-                        Auth0 Demo
-                    </Typography>
-                </Toolbar>
-            </AppBar>
-        </header>
-    )
-}
-
 
 const styles = (theme: Theme) =>
-    createStyles({
-        root: {
+	createStyles({
+		root: {},
+		title: {
+			color: red.A200,
+			fontWeight: 'bold',
+			textDecoration: 'none',
+		},
+	})
 
-        },
-        title: {
-            color: red.A200,
-            fontWeight: 'bold'
-        }
-    })
+export const StyledHeader = withStyles(styles)(Header)
 
-export default withStyles(styles)(Header)
+export default withRouter(StyledHeader)

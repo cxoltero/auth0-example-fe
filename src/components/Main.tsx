@@ -7,14 +7,6 @@ interface IMainProps extends WithStyles<typeof styles> {
 }
 
 class Main extends React.Component<IMainProps, {}> {
-	public componentDidMount() {
-		const { renewSession } = this.props.auth
-
-		if (localStorage.getItem('isLoggedIn') === 'true') {
-			renewSession()
-		}
-	}
-
 	public render() {
 		const { auth } = this.props
 
