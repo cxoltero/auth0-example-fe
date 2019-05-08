@@ -1,59 +1,63 @@
-import {Button, Checkbox, createStyles, FormControl, FormControlLabel, Input, InputLabel, Paper, Theme, WithStyles, withStyles} from "@material-ui/core";
-import * as React from "react";
+import { Button, createStyles, Paper, Theme, WithStyles, withStyles } from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
+import * as React from 'react'
 
 interface ILoginFormProps extends WithStyles<typeof styles> {
-
+	isAuthenticated: boolean
+	onLogout: () => void
+	onSubmit: () => void
 }
 
 class LoginForm extends React.Component<ILoginFormProps, {}> {
-    public render() {
-        const {classes} = this.props
+	public render() {
+		const { classes, isAuthenticated } = this.props
 
-        return (
-            <Paper className={classes.root}>
-                <form className={classes.form}>
-                    <FormControl margin="normal" required={true} fullWidth={true}>
-                        <InputLabel htmlFor="email">Email Address</InputLabel>
-                        <Input id="email" name="email" autoComplete="email" autoFocus={true} />
-                    </FormControl>
-                    <FormControl margin="normal" required={true} fullWidth={true}>
-                        <InputLabel htmlFor="password">Password</InputLabel>
-                        <Input name="password" type="password" id="password" autoComplete="current-password" />
-                    </FormControl>
-                    <FormControlLabel
-                        control={<Checkbox value="remember" color="primary" />}
-                        label="Remember me"
-                    />
+		return (
+			<Paper className={classes.root}>
+				<form className={classes.form} onSubmit={this.handleFormSubmit}>
+					<Typography align="center" component="h1" variant="h5" style={{ padding: '20px 0' }}>
+						{isAuthenticated ? 'You are signed in' : 'Please Sign In'}
+					</Typography>
+					<div className={classes.formActions}>
+						{isAuthenticated ? (
+							<Button variant="contained" color="secondary" className={classes.logout} onClick={this.handleLogout}>
+								Log Out
+							</Button>
+						) : (
+							<Button type="submit" variant="contained" color="primary" className={classes.submit}>
+								Log In
+							</Button>
+						)}
+					</div>
+				</form>
+			</Paper>
+		)
+	}
 
-                    <div className={classes.formActions}>
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Sign in
-                        </Button>
-                    </div>
+	private handleFormSubmit = (event: React.FormEvent<HTMLFormElement>): void => {
+		event.preventDefault()
 
-                </form>
-            </Paper>
-        )
-    }
+		this.props.onSubmit()
+	}
+
+	private handleLogout = (event: React.MouseEvent<HTMLElement, MouseEvent>): void => {
+		event.preventDefault()
+		this.props.onLogout()
+	}
 }
 
-
 const styles = (theme: Theme) =>
-    createStyles({
-        form: {
-            padding: `${theme.spacing.unit * 2}px`
-        },
-        formActions: {
-            display: 'flex',
-            justifyContent: 'flex-end'
-        },
-        root: {},
-        submit: {},
-    })
+	createStyles({
+		form: {
+			padding: `${theme.spacing.unit * 2}px`,
+		},
+		formActions: {
+			display: 'flex',
+			justifyContent: 'center',
+		},
+		logout: {},
+		root: {},
+		submit: {},
+	})
 
 export default withStyles(styles)(LoginForm)
