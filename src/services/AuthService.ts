@@ -96,6 +96,11 @@ export default class Auth {
         this.idToken = authResult.idToken;
         this.expiresAt = expiresAt;
 
+
+        localStorage.setItem('isLoggedIn', 'true');
+        localStorage.setItem('access_token', this.accessToken || '');
+        localStorage.setItem('id_token', this.idToken || '');
+
         this.redirectToHome()
     }
 

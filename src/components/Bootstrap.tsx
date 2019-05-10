@@ -23,15 +23,9 @@ class Bootstrap extends React.Component<IBootstrapProps, {}> {
 	public componentDidMount() {
 		const { renewSession } = auth
 		const isLoggedIn = localStorage.getItem('isLoggedIn')
-		console.log('isLoggedIn: ', isLoggedIn)
 
-		if (isLoggedIn) {
-			console.log('isLoggedIn: ', isLoggedIn)
-			console.log('isLoggedIn: ', typeof isLoggedIn)
-
-			if (localStorage.getItem('isLoggedIn') === 'true') {
-				renewSession()
-			}
+		if (isLoggedIn && isLoggedIn === 'true') {
+			renewSession()
 		}
 	}
 
